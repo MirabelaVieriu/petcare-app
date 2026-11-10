@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  passwordHash  String
+  firstName     String
+  lastName      String
+  phone         String
+  appointments  Appointment[]
+  pets          Pet[]
+  subscriptions Subscription[]
+}
+
+model Admin {
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  phone        String
+  appointments Appointment[]
+  plans        Plan[]
+}
+
+model Plan {
+  id            Int            @id @default(autoincrement())
+  adminId       Int
+  name          String         @unique
+  price         Int
+  discount      Int            @default(0)
+  priority      Boolean        @default(false)
+  admin         Admin          @relation(fields: [adminId], references: [id])
+  services      PlanService[]
+  subscriptions Subscription[]
+}
+
+model PlanService {
+  id       Int         @id @default(autoincrement())
+  planId   Int
+  service  ServiceType
+  perMonth Int
+  plan     Plan        @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@unique([planId, service])
+}
+
+model Subscription {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  planId    Int
+  startDate DateTime @default(now())
+  active    Boolean  @default(true)
+  plan      Plan     @relation(fields: [planId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, active])
+}
+
+model Pet {
+  id           Int           @id @default(autoincrement())
+  userId       Int
+  name         String
+  type         String
+  age          Int?
+  breed        String?
+  appointments Appointment[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Appointment {
+  id      Int         @id @default(autoincrement())
+  userId  Int
+  petId   Int?
+  adminId Int?
+  service ServiceType
+  date    DateTime
+  admin   Admin?      @relation(fields: [adminId], references: [id])
+  pet     Pet?        @relation(fields: [petId], references: [id])
+  user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, service, date])
+}
+
+enum ServiceType {
+  PETS
+  CONSULT
+  TELE
+  GROOMING
+  VACCINE
+  HOME_VISIT
+}
