@@ -1,9 +1,7 @@
 import { redirectIfLoggedIn } from "@/lib/auth/guards";
 import AuthForm from "@/components/auth/AuthForm";
-import { Nunito } from "next/font/google";
 import LoginArt from "@/components/auth/LoginArt";
-
-const nunito = Nunito({ subsets: ["latin", "latin-ext"], weight: ["400", "600", "700", "800"] });
+import { nunito } from "@/lib/fonts";
 
 export default async function RegisterPage() {
   await redirectIfLoggedIn();
