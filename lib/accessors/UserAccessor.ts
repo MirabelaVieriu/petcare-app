@@ -41,4 +41,28 @@ export class UserAccessor {
     }) {
         return prisma.user.create({ data, omit });
     }
+    static getClientsOfVet(vetId: number, take?: number) {
+        return prisma.user.findMany({
+            where: { vetId},
+            orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+            ...(take ? { take } : {}),
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                phone: true,
+                pets: {
+                    select: { id: true, name: true, type: true, breed: true, age: true },
+                    orderBy: { name: "asc" },
+                },
+                subscriptions: {
+                    where: { active: true },
+                    orderBy: { startDate: "desc" },
+                    take: 1,
+                    select: { plan: { select: { name: true, price: true, priority: true } } },
+                },
+            },
+        });
+    }
 }
