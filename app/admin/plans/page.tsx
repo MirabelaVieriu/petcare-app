@@ -16,7 +16,7 @@ export default async function PlansIndexPage() {
     return (
         <div className={styles.page}>
             <div className={styles.container}>
-                <Link href="/admin" className={styles.topLink}>← Dashboard</Link>
+                <Link href="/admin" className="admBack">←</Link>
 
                 <div className={styles.header}>
                     <div>
