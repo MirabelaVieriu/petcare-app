@@ -15,7 +15,7 @@ export default async function CreatePlanView() {
     return (
         <div className={styles.page}>
             <div className={`${styles.container} ${styles.narrow}`}>
-                <Link href="/admin/plans" className={styles.topLink}>← Înapoi la listă</Link>
+                <Link href="/admin/plans" className="admBack">← Înapoi la listă</Link>
 
                 <div className={styles.header}>
                     <div>
