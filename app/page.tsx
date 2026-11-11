@@ -1,8 +1,6 @@
-import { Nunito } from "next/font/google";
 import LoginArt from "@/components/auth/LoginArt";
 import LoginCard from "@/components/auth/LoginCard";
-
-const nunito = Nunito({ subsets: ["latin", "latin-ext"], weight: ["400", "600", "700", "800"] });
+import { nunito } from "@/lib/fonts";
 
 export default function HomePage() {
     return (

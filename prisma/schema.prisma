@@ -13,9 +13,13 @@ model User {
   firstName     String
   lastName      String
   phone         String
+  vetId         Int?
+  vet           Admin?         @relation("UserVet", fields: [vetId], references: [id], onDelete: SetNull)
   appointments  Appointment[]
   pets          Pet[]
   subscriptions Subscription[]
+
+  @@index([vetId])
 }
 
 model Admin {
@@ -27,6 +31,7 @@ model Admin {
   phone        String
   appointments Appointment[]
   plans        Plan[]
+  clients      User[]        @relation("UserVet")
 }
 
 model Plan {
