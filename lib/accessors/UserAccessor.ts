@@ -37,6 +37,7 @@ export class UserAccessor {
         firstName: string;
         lastName: string;
         phone: string;
+        vetId?: number;
         passwordHash: string;
     }) {
         return prisma.user.create({ data, omit });

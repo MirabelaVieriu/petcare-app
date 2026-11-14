@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { loginAction, registerAction, type AuthState } from "@/lib/actions/auth";
+type Vet = { id: number; label: string };
+type Props = { mode: "login" | "register"; role?: "admin" | "user"; vets?: Vet[]};
 
-type Props = { mode: "login" | "register"; role?: "admin" | "user" };
-
-export default function AuthForm({ mode, role = "user" }: Props) {
+export default function AuthForm({ mode, role = "user",vets=[] }: Props) {
     const action = mode === "login" ? loginAction : registerAction;
     const [state, formAction, pending] = useActionState<AuthState, FormData>(action, undefined);
     const isAdmin = role === "admin";
@@ -44,6 +44,18 @@ export default function AuthForm({ mode, role = "user" }: Props) {
                             <span>Telefon</span>
                             <input name="phone" type="tel" required autoComplete="tel" />
                         </label>
+                        {vets.length > 0 && (
+                            <label className="field">
+                                <span>Veterinarul tău</span>
+                                <select name="vetId" required defaultValue="">
+                                    <option value="" disabled>Alege veterinarul...</option>
+                                    {vets.map(v => (
+                                        <option key={v.id} value={v.id}>{v.label}</option>
+                                    ))}
+                                </select>
+                            </label>
+                        )}
+
                     </>
                 )}
 

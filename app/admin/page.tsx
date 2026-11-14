@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { Nunito } from "next/font/google";
 import { AccountAccessor } from "@/lib/accessors/AcountAccessor";
 import { getSession } from "@/lib/auth/session";
 import { logoutAction } from "@/lib/actions/auth";
-
-const nunito = Nunito({ subsets: ["latin", "latin-ext"], weight: ["400", "600", "700", "800"] });
+import { nunito } from "@/lib/fonts";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +33,11 @@ export default async function AdminHome() {
                         <span className="dashTileIcon">📅</span>
                         <h2 className="dashTileTitle">Programări</h2>
                         <p className="dashTileText">Vezi agenda și creează programări</p>
+                    </Link>
+                    <Link href="/admin/clients" className="dashTile">
+                        <span className="dashTileIcon">🐶</span>
+                        <h2 className="dashTileTitle">Clienți</h2>
+                        <p className="dashTileText">Proprietarii și animalele lor</p>
                     </Link>
                 </div>
             </div>
