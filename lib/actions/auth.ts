@@ -32,6 +32,7 @@ export async function registerAction(_prev: AuthState, formData: FormData): Prom
     const lastName = str(formData, "lastName");
     const phone = str(formData, "phone");
     const email = str(formData, "email").toLowerCase();
+    const vetRaw = str(formData, "vetId");
     const password = String(formData.get("password") ?? "");
     const confirm = String(formData.get("confirm") ?? "");
 
@@ -39,6 +40,18 @@ export async function registerAction(_prev: AuthState, formData: FormData): Prom
     if (!/^\S+@\S+\.\S+$/.test(email)) return { error: "Email invalid." };
     if (password.length < 8) return { error: "Parola trebuie să aibă minim 8 caractere." };
     if (password !== confirm) return { error: "Parolele nu coincid." };
+    let vetId: number | undefined;
+    if (vetRaw) {
+        const parsed = Number(vetRaw);
+        const vet = Number.isInteger(parsed)
+            ? await prisma.admin.findUnique({ where: { id: parsed }, select: { id: true } })
+            : null;
+        if (!vet) return { error: "Veterinar invalid." };
+        vetId = vet.id;
+    } else if ((await prisma.admin.count()) > 0) {
+        return { error: "Alege veterinarul." };
+    }
+
 
     const [existingUser, existingAdmin] = await Promise.all([
         UserAccessor.getByEmail(email),
@@ -51,6 +64,7 @@ export async function registerAction(_prev: AuthState, formData: FormData): Prom
         lastName,
         phone,
         email,
+        vetId,
         passwordHash: await bcrypt.hash(password, 10),
     });
 
