@@ -234,7 +234,7 @@ export default async function UserHomePage() {
                                 <div className="vetAvatar">🩺</div>
                                 <div>
                                     <strong>{vet.firstName} {vet.lastName}</strong>
-                                    <small>{vet.phone}</small>
+                                    <small style={{ display: "block" }}>Nr: {vet.phone}</small>
                                 </div>
                             </div>
                         </section>

@@ -20,7 +20,7 @@ export default async function UserLayout({ children }: { children: ReactNode }) 
                 <div className="topbarRight">
                     <span>{user.firstName} {user.lastName}</span>
                     <form action={logoutAction}>
-                        <button type="submit" className="logoutBtn">Ieșire</button>
+                        <button type="submit" className="logoutBtn">Delogare</button>
                     </form>
                 </div>
             </header>
