@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { apiAdminOnly } from "@/lib/auth/apiGuard";
 import { AppointmentsApiController } from "@/lib/controllers/AppointmentsApiController";
-
+import { apiSession, unauthorized } from "@/lib/auth/apiGuard";
+import { respond } from "@/lib/api/http";
 export const dynamic = "force-dynamic";
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -29,4 +30,8 @@ export async function PUT(request: Request, { params }: Ctx) {
     const { id } = await params;
     const res = await AppointmentsApiController.update(Number(id), json);
     return NextResponse.json(res.body, { status: res.status });
+}
+export async function DELETE(_req: Request, { params }: Ctx) {
+    if (!(await apiSession("ADMIN"))) return unauthorized();
+    return respond(await AppointmentsApiController.remove(Number((await params).id)));
 }

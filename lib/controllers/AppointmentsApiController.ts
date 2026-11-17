@@ -3,9 +3,8 @@ import { toAppointmentDto, toAppointmentDtos, type AppointmentDto } from "@/lib/
 import { readAppointmentJson, validateAppointmentForm } from "@/lib/models/Appoinmentviewmodel";
 
 type ApiResult<T> =
-    | { status: 200 | 201; body: T }
+    | { status: 200 | 201 | 204; body: T }
     | { status: 400 | 404; body: { errors: Record<string, string> } };
-
 async function validate(body: unknown) {
     const values = readAppointmentJson(body);
     const { errors, data } = validateAppointmentForm(values);
@@ -61,5 +60,13 @@ export const AppointmentsApiController = {
         } catch {
             return { status: 400, body: { errors: { form: "Client sau veterinar inexistent." } } };
         }
+    },
+    /** DELETE /api/appointments/{id} */
+    async remove(id: number): Promise<ApiResult<null>> {
+        if (!Number.isInteger(id) || id <= 0 || !(await AppointmentAccessor.getEntity(id))) {
+            return { status: 404, body: { errors: { id: "Programarea nu există." } } };
+        }
+        await AppointmentAccessor.deleteEntity(id);
+        return { status: 204, body: null };
     },
 };

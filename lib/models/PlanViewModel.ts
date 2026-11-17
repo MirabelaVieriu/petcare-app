@@ -106,3 +106,14 @@ export function validatePlanForm(values: PlanFormValues): { errors: PlanFormErro
         },
     };
 }
+export function readPlanJson(body: unknown): PlanFormValues {
+    const b = (body && typeof body === "object" ? body : {}) as Record<string, unknown>;
+    const text = (k: string) => (b[k] == null ? "" : String(b[k]));
+    return {
+        name: text("name"),
+        price: text("price"),
+        discount: text("discount"),
+        adminId: text("adminId"),
+        priority: b.priority === true || b.priority === "on",
+    };
+}
