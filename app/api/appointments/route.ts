@@ -1,30 +1,22 @@
-import { NextResponse } from "next/server";
-import { apiAdminOnly } from "@/lib/auth/apiGuard";
+import { apiSession, unauthorized } from "@/lib/auth/apiGuard";
+import { fail, readJson, respond } from "@/lib/api/http";
 import { AppointmentsApiController } from "@/lib/controllers/AppointmentsApiController";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-    const denied = await apiAdminOnly();
-    if (denied) return denied;
-
-    const res = await AppointmentsApiController.getAll();
-    return NextResponse.json(res.body, { status: res.status });
+    if (!(await apiSession("ADMIN"))) return unauthorized();
+    return respond(await AppointmentsApiController.getAll());
 }
-
 export async function POST(request: Request) {
-    const denied = await apiAdminOnly();
-    if (denied) return denied;
+    if (!(await apiSession("ADMIN"))) return unauthorized();
 
-    let json: unknown;
-    try {
-        json = await request.json();
-    } catch {
-        return NextResponse.json({ errors: { form: "JSON invalid." } }, { status: 400 });
-    }
+
+    const json = await readJson(request);
+    if (json === null) return respond(fail(400, { form: "JSON invalid." }));
 
     const res = await AppointmentsApiController.create(json);
     const headers: HeadersInit = {};
     if (res.status === 201) headers["Location"] = `/api/appointments/${(res.body as { id: number }).id}`;
-    return NextResponse.json(res.body, { status: res.status, headers });
+    return respond(res,headers);
 }

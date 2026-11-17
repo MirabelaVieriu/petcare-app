@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { Nunito } from "next/font/google";
 import { AppointmentsController } from "@/lib/controllers/AppoinmentsController";
 import { serviceIcon, serviceLabel } from "@/lib/models/Appoinmentviewmodel";
-import DeleteAppointmentButton from "@/components/appointmet/DeleteAppointmentButton";
+import ConfirmDeleteButton from "@/components/user/ConfirmDeleteButton";
 import styles from "./appointments.module.css";
 
-const nunito = Nunito({ subsets: ["latin", "latin-ext"], weight: ["400", "600", "700", "800"] });
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +11,7 @@ export default async function AppointmentsIndex() {
     const appointments = await AppointmentsController.index();
 
     return (
-        <div className={`${styles.page} ${nunito.className}`}>
+        <div className={styles.page}>
             <div className={styles.container}>
                 <Link href="/admin" className={styles.topLink}>← Dashboard</Link>
 
@@ -74,8 +72,13 @@ export default async function AppointmentsIndex() {
                                                 >
                                                     ✏️ Editează
                                                 </Link>
-                                                <DeleteAppointmentButton id={a.id} />
-                                            </div>
+                                                <ConfirmDeleteButton
+                                                    variant="icon"
+                                                    endpoint={`/api/appointments/${a.id}`}
+                                                    ariaLabel="Șterge programarea"
+                                                    title="Ștergi programarea?"
+                                                    description="Programarea va fi ștearsă definitiv."
+                                                />                                            </div>
                                         </td>
                                     </tr>
                                 ))}

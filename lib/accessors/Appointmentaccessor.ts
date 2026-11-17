@@ -1,10 +1,21 @@
-import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import type {
     AppointmentData,
     AppointmentFormOptions,
     AppointmentViewModel,
 } from "@/lib/models/Appoinmentviewmodel";
+
+const apiSelect = {
+    id: true,
+    date: true,
+    service: true,
+    user: { select: { id: true, firstName: true, lastName: true } },
+    pet: { select: { id: true, name: true, type: true } },
+    admin: { select: { id: true, firstName: true, lastName: true } },
+} satisfies Prisma.AppointmentSelect;
+
+export type AppointmentApiRow = Prisma.AppointmentGetPayload<{ select: typeof apiSelect }>;
 
 export const AppointmentAccessor = {
     /** Index: programările, cu numele din tabelele legate (JOIN) */
@@ -32,7 +43,17 @@ export const AppointmentAccessor = {
         }));
     },
 
-    /** Create: datele pentru listele de selecție */
+    /** API: toate programările */
+    getAllForApi(): Promise<AppointmentApiRow[]> {
+        return prisma.appointment.findMany({ select: apiSelect, orderBy: { date: "desc" } });
+    },
+
+    /** API: o programare după id */
+    getByIdForApi(id: number): Promise<AppointmentApiRow | null> {
+        return prisma.appointment.findUnique({ where: { id }, select: apiSelect });
+    },
+
+    /** Datele pentru listele de selecție */
     async getFormOptions(): Promise<AppointmentFormOptions> {
         const [users, pets, admins] = await Promise.all([
             prisma.user.findMany({
@@ -62,7 +83,6 @@ export const AppointmentAccessor = {
         return count > 0;
     },
 
-    /** Create */
     async addEntity(data: AppointmentData): Promise<number> {
         const created = await prisma.appointment.create({
             data: {
@@ -77,7 +97,7 @@ export const AppointmentAccessor = {
         return created.id;
     },
 
-    /** Edit: o programare după id (pentru precompletarea formularului) */
+    /** Pentru precompletarea formularului de edit */
     async getEntity(id: number) {
         return prisma.appointment.findUnique({
             where: { id },
@@ -92,7 +112,6 @@ export const AppointmentAccessor = {
         });
     },
 
-    /** Update */
     async updateEntity(id: number, data: AppointmentData): Promise<void> {
         await prisma.appointment.update({
             where: { id },
@@ -106,27 +125,7 @@ export const AppointmentAccessor = {
         });
     },
 
-    /** Delete */
     async deleteEntity(id: number): Promise<void> {
         await prisma.appointment.delete({ where: { id } });
     },
-    /** API: toate programările (model DB, cu relații) */
-    getAllForApi(): Promise<AppointmentApiRow[]> {
-        return prisma.appointment.findMany({ select: apiSelect, orderBy: { date: "desc" } });
-    },
-
-    /** API: o programare după id */
-    getByIdForApi(id: number): Promise<AppointmentApiRow | null> {
-        return prisma.appointment.findUnique({ where: { id }, select: apiSelect });
-    },
 };
-const apiSelect = {
-    id: true,
-    date: true,
-    service: true,
-    user: { select: { id: true, firstName: true, lastName: true } },
-    pet: { select: { id: true, name: true, type: true } },
-    admin: { select: { id: true, firstName: true, lastName: true } },
-} satisfies Prisma.AppointmentSelect;
-
-export type AppointmentApiRow = Prisma.AppointmentGetPayload<{ select: typeof apiSelect }>;
