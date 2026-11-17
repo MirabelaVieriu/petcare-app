@@ -3,7 +3,6 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/auth/guards";
 import { OwnerAccessor } from "@/lib/accessors/OwnerAccessor";
 import ConfirmDeleteButton from "@/components/user/ConfirmDeleteButton";
-import { deleteClient } from "./actions";
 export const dynamic = "force-dynamic";
 
 const initials = (fullName: string) =>
