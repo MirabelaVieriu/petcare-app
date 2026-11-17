@@ -1,37 +1,50 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import type { FormState } from "@/lib/pets/PetForm";
+import { useRouter } from "next/navigation";
 
 const PET_TYPES = ["Câine", "Pisică", "Pasăre", "Iepure", "Rozător", "Reptilă", "Altele"];
 
-type Props = {
-    action: (prev: FormState, formData: FormData) => Promise<FormState>;
-    userId?: number;
-    label?: string;
-};
+type Props = { endpoint: string; label?: string };
 
-export default function AddPetButton({ action, userId, label = "＋ Adaugă animal" }: Props) {
+
+export default function AddPetButton({ endpoint, label = "＋ Adaugă animal" }: Props) {
+    const router = useRouter();
     const [open, setOpen] = useState(false);
-    const [state, setState] = useState<FormState>(undefined);
+    const [error, setError] = useState<string | null>(null);
     const [pending, startTransition] = useTransition();
     const formRef = useRef<HTMLFormElement>(null);
 
     function handleSubmit(formData: FormData) {
         startTransition(async () => {
-            const nextState = await action(state, formData);
-            setState(nextState);
-
-            if (nextState?.ok) {
+            setError(null);
+            try {
+                const res = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(Object.fromEntries(formData)),
+                });
+                if (!res.ok) {
+                    const data = await res.json().catch(() => null);
+                    const first = data?.errors ? (Object.values(data.errors)[0] as string) : undefined;
+                    setError(first ?? "Nu s-a putut salva animalul.");
+                    return;
+                }
                 formRef.current?.reset();
                 setOpen(false);
+                router.refresh();
+            } catch {
+                setError("Eroare de rețea.");
             }
         });
     }
-
     if (!open) {
         return (
-            <button type="button" className="addPetToggle" onClick={() => { setState(undefined); setOpen(true); }}>
+            <button
+                type="button"
+                className="addPetToggle"
+                onClick={() => { setError(null); setOpen(true); }}
+            >
                 {label}
             </button>
         );
@@ -39,8 +52,6 @@ export default function AddPetButton({ action, userId, label = "＋ Adaugă anim
 
     return (
         <form ref={formRef} action={handleSubmit} className="addPetPanel">
-            {userId !== undefined && <input type="hidden" name="userId" value={userId} />}
-
             <div className="admGrid2">
                 <div className="admField">
                     <label htmlFor="petName">Nume</label>
@@ -66,7 +77,7 @@ export default function AddPetButton({ action, userId, label = "＋ Adaugă anim
                 </div>
             </div>
 
-            {state?.error && <p className="formError">{state.error}</p>}
+            {error && <p className="formError">{error}</p>}
 
             <div className="admActions">
                 <button type="submit" className="admBtnPrimary" disabled={pending}>
