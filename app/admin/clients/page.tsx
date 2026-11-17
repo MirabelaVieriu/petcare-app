@@ -3,7 +3,6 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/auth/guards";
 import { OwnerAccessor } from "@/lib/accessors/OwnerAccessor";
 import ConfirmDeleteButton from "@/components/user/ConfirmDeleteButton";
-import { deleteClient } from "./actions";
 export const dynamic = "force-dynamic";
 
 const initials = (fullName: string) =>
@@ -101,7 +100,7 @@ export default async function AdminClientsPage() {
                                     <div className="clientCardActions">
                                         <ConfirmDeleteButton
                                             variant="icon"
-                                            action={deleteClient.bind(null, o.id)}
+                                            endpoint={`/api/clients/${o.id}`}
                                             ariaLabel={`Șterge ${o.fullName}`}
                                             title="Ștergi clientul?"
                                             description={

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PlansController } from "@/lib/controllers/PlansController";
 import styles from "../plans.module.css";
+import ConfirmDeleteButton from "@/components/user/ConfirmDeleteButton";
 
 export const dynamic = "force-dynamic";
 

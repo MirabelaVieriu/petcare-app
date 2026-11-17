@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { Nunito } from "next/font/google";
 import { AppointmentsController } from "@/lib/controllers/AppoinmentsController";
 import { serviceIcon, serviceLabel } from "@/lib/models/Appoinmentviewmodel";
-import DeleteAppointmentButton from "@/components/appointmet/DeleteAppointmentButton";
 import styles from "./appointments.module.css";
+import ConfirmDeleteButton from "@/components/user/ConfirmDeleteButton";
 
-const nunito = Nunito({ subsets: ["latin", "latin-ext"], weight: ["400", "600", "700", "800"] });
 
 export const dynamic = "force-dynamic";
 
@@ -13,9 +11,8 @@ export default async function AppointmentsIndex() {
     const appointments = await AppointmentsController.index();
 
     return (
-        <div className={`${styles.page} ${nunito.className}`}>
-            <div className={styles.container}>
-                <Link href="/admin" className={styles.topLink}>← Dashboard</Link>
+        <div className={styles.page}>
+            <Link href="/admin" className={styles.topLink}>← Dashboard</Link>
 
                 <div className={styles.header}>
                     <div>
@@ -74,7 +71,13 @@ export default async function AppointmentsIndex() {
                                                 >
                                                     ✏️ Editează
                                                 </Link>
-                                                <DeleteAppointmentButton id={a.id} />
+                                                <ConfirmDeleteButton
+                                                    variant="icon"
+                                                    endpoint={`/api/appointments/${a.id}`}
+                                                    label="Șterge"
+                                                    title="Ștergi programarea?"
+                                                    description="Programarea va fi ștearsă definitiv."
+                                                />
                                             </div>
                                         </td>
                                     </tr>
@@ -85,6 +88,5 @@ export default async function AppointmentsIndex() {
                     )}
                 </div>
             </div>
-        </div>
     );
 }

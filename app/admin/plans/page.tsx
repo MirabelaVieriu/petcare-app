@@ -1,17 +1,12 @@
 import Link from "next/link";
 import { PlansController } from "@/lib/controllers/PlansController";
 import styles from "./plans.module.css";
+import ConfirmDeleteButton from "@/components/user/ConfirmDeleteButton";
 
 export const dynamic = "force-dynamic";
 
 export default async function PlansIndexPage() {
     const { plans } = await PlansController.index();
-
-    async function deletePlanAction(formData: FormData) {
-        "use server";
-        const planId = Number(formData.get("planId"));
-        await PlansController.deletePlan(planId);
-    }
 
     return (
         <div className={styles.page}>
@@ -64,10 +59,13 @@ export default async function PlansIndexPage() {
                                             <div className={styles.rowActions}>
                                                 <Link href={`/admin/plans/${plan.id}`} className={styles.linkAction}>Detalii</Link>
                                                 <Link href={`/admin/plans/${plan.id}/edit`} className={styles.linkAction}>Editează</Link>
-                                                <form action={deletePlanAction}>
-                                                    <input type="hidden" name="planId" value={plan.id} />
-                                                    <button type="submit" className={styles.dangerInline}>Șterge</button>
-                                                </form>
+                                                <ConfirmDeleteButton
+                                                    variant="icon"
+                                                    endpoint={`/api/plans/${plan.id}`}
+                                                    ariaLabel={`Șterge planul ${plan.name}`}
+                                                    title="Ștergi planul?"
+                                                    description={<><strong>{plan.name}</strong> va fi șters definitiv.</>}
+                                                />
                                             </div>
                                         </td>
                                     </tr>

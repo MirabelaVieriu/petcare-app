@@ -1,13 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Nunito } from "next/font/google";
 import { AppointmentsController } from "@/lib/controllers/AppoinmentsController";
 import AppointmentForm from "@/components/appointmet/AppointmentForm";
-import { updateAppointmentById } from "@/app/admin/appointments/actions";
 import type { AppointmentFormValues } from "@/lib/models/Appoinmentviewmodel";
 import styles from "@/app/admin/appointments/appointments.module.css";
 
-const nunito = Nunito({ subsets: ["latin", "latin-ext"], weight: ["400", "600", "700", "800"] });
 export const dynamic = "force-dynamic";
 
 function toDateTimeLocalValue(date: Date): string {
@@ -39,10 +36,8 @@ export default async function EditAppointmentPage({
         date: toDateTimeLocalValue(appointment.date),
     };
 
-    const submitAction = updateAppointmentById.bind(null, appointmentId);
-
     return (
-        <div className={`${styles.page} ${nunito.className}`}>
+        <div className={styles.page}>
             <div className={`${styles.container} ${styles.narrow}`}>
                 <Link href="/admin/appointments" className={styles.topLink}>← Înapoi la listă</Link>
 
@@ -57,7 +52,8 @@ export default async function EditAppointmentPage({
                     <AppointmentForm
                         options={options}
                         initialValues={initialValues}
-                        submitAction={submitAction}
+                        endpoint={`/api/appointments/${appointmentId}`}
+                        method="PUT"
                         submitLabel="Salvează modificările"
                     />
                 </div>

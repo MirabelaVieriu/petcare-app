@@ -6,6 +6,16 @@ import type {
     AppointmentViewModel,
 } from "@/lib/models/Appoinmentviewmodel";
 
+const apiSelect = {
+    id: true,
+    date: true,
+    service: true,
+    user: { select: { id: true, firstName: true, lastName: true } },
+    pet: { select: { id: true, name: true, type: true } },
+    admin: { select: { id: true, firstName: true, lastName: true } },
+} satisfies Prisma.AppointmentSelect;
+
+export type AppointmentApiRow = Prisma.AppointmentGetPayload<{ select: typeof apiSelect }>;
 export const AppointmentAccessor = {
     /** Index: programările, cu numele din tabelele legate (JOIN) */
     async getEntities(): Promise<AppointmentViewModel[]> {
@@ -32,6 +42,15 @@ export const AppointmentAccessor = {
         }));
     },
 
+    /** API: toate programările */
+    getAllForApi(): Promise<AppointmentApiRow[]> {
+        return prisma.appointment.findMany({ select: apiSelect, orderBy: { date: "desc" } });
+    },
+
+    /** API: o programare după id */
+    getByIdForApi(id: number): Promise<AppointmentApiRow | null> {
+        return prisma.appointment.findUnique({ where: { id }, select: apiSelect });
+    },
     /** Create: datele pentru listele de selecție */
     async getFormOptions(): Promise<AppointmentFormOptions> {
         const [users, pets, admins] = await Promise.all([
@@ -110,23 +129,4 @@ export const AppointmentAccessor = {
     async deleteEntity(id: number): Promise<void> {
         await prisma.appointment.delete({ where: { id } });
     },
-    /** API: toate programările (model DB, cu relații) */
-    getAllForApi(): Promise<AppointmentApiRow[]> {
-        return prisma.appointment.findMany({ select: apiSelect, orderBy: { date: "desc" } });
-    },
-
-    /** API: o programare după id */
-    getByIdForApi(id: number): Promise<AppointmentApiRow | null> {
-        return prisma.appointment.findUnique({ where: { id }, select: apiSelect });
-    },
 };
-const apiSelect = {
-    id: true,
-    date: true,
-    service: true,
-    user: { select: { id: true, firstName: true, lastName: true } },
-    pet: { select: { id: true, name: true, type: true } },
-    admin: { select: { id: true, firstName: true, lastName: true } },
-} satisfies Prisma.AppointmentSelect;
-
-export type AppointmentApiRow = Prisma.AppointmentGetPayload<{ select: typeof apiSelect }>;
