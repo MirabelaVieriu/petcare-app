@@ -56,7 +56,6 @@ export const emptyAppointmentForm: AppointmentFormValues = {
     date: "",
 };
 
-//export const serviceOptions = Object.values(ServiceType);
 
 export const SERVICE_OPTIONS = [
     { value: "CONSULT", label: "Consult", icon: "🩺" },
@@ -89,7 +88,17 @@ export function readAppointmentForm(formData: FormData): AppointmentFormValues {
         date: text("date"),
     };
 }
-
+export function readAppointmentJson(body: unknown): AppointmentFormValues {
+    const b = (body && typeof body === "object" ? body : {}) as Record<string, unknown>;
+    const text = (key: string) => (b[key] == null ? "" : String(b[key]));
+    return {
+        userId: text("userId"),
+        petId: text("petId"),
+        adminId: text("adminId"),
+        service: text("service"),
+        date: text("date"),
+    };
+}
 export function validateAppointmentForm(
     values: AppointmentFormValues
 ): { errors: AppointmentFormErrors; data?: AppointmentData } {

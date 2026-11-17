@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import type {
     AppointmentData,
     AppointmentFormOptions,
@@ -109,4 +110,23 @@ export const AppointmentAccessor = {
     async deleteEntity(id: number): Promise<void> {
         await prisma.appointment.delete({ where: { id } });
     },
+    /** API: toate programările (model DB, cu relații) */
+    getAllForApi(): Promise<AppointmentApiRow[]> {
+        return prisma.appointment.findMany({ select: apiSelect, orderBy: { date: "desc" } });
+    },
+
+    /** API: o programare după id */
+    getByIdForApi(id: number): Promise<AppointmentApiRow | null> {
+        return prisma.appointment.findUnique({ where: { id }, select: apiSelect });
+    },
 };
+const apiSelect = {
+    id: true,
+    date: true,
+    service: true,
+    user: { select: { id: true, firstName: true, lastName: true } },
+    pet: { select: { id: true, name: true, type: true } },
+    admin: { select: { id: true, firstName: true, lastName: true } },
+} satisfies Prisma.AppointmentSelect;
+
+export type AppointmentApiRow = Prisma.AppointmentGetPayload<{ select: typeof apiSelect }>;
