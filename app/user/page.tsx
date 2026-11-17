@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { petEmoji } from "@/lib/models/OwnerViewModel";
 import AddPetButton from "@/components/pets/AddPetButton";
 import ConfirmDeleteButton from "@/components/user/ConfirmDeleteButton";
-import { createMyPet, deleteMyPet } from "./actions";
+import { serviceLabel } from "@/lib/models/Appoinmentviewmodel";
 
 export const dynamic = "force-dynamic";
 
@@ -12,17 +12,6 @@ const TZ = "Europe/Bucharest";
 const fmt = (d: Date) =>
     d.toLocaleString("ro-RO", { dateStyle: "medium", timeStyle: "short", timeZone: TZ });
 const fmtDay = (d: Date) => d.toLocaleDateString("ro-RO", { dateStyle: "medium", timeZone: TZ });
-
-// Etichetele serviciilor, într-un singur loc. Ajustează-le după cum le folosești în aplicație.
-const SERVICE_LABEL: Record<string, string> = {
-    PETS: "Animale",
-    CONSULT: "Consult",
-    TELE: "Teleconsult",
-    GROOMING: "Grooming",
-    VACCINE: "Vaccinare",
-    HOME_VISIT: "Vizită la domiciliu",
-};
-const serviceLabel = (s: string) => SERVICE_LABEL[s] ?? s.replaceAll("_", " ");
 
 export default async function UserHomePage() {
     const user = await requireUser();
@@ -123,7 +112,7 @@ export default async function UserHomePage() {
                         <span className="countPill">{pets.length}</span>
                     </div>
 
-                    <AddPetButton action={createMyPet} />
+                    <AddPetButton endpoint="/api/me/pets" />
 
                     {pets.length === 0 ? (
                         <div className="empty">
@@ -146,7 +135,7 @@ export default async function UserHomePage() {
                                     <ConfirmDeleteButton
                                         variant="icon"
                                         icon="🐾"
-                                        action={deleteMyPet.bind(null, p.id)}
+                                        endpoint={`/api/me/pets/${p.id}`}
                                         ariaLabel={`Șterge animalul ${p.name}`}
                                         title="Ștergi animalul?"
                                         description={

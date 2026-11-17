@@ -1,8 +1,5 @@
+export type PlanServiceValue = { service: string; perMonth: number };
 
-export interface PlanServiceViewModel {
-    service: string;
-    perMonth: number;
-}
 
 export interface PlanViewModel {
     id: number;
@@ -13,7 +10,7 @@ export interface PlanViewModel {
     adminId: number;
     adminName: string;
     activeSubscribers: number;
-    services: PlanServiceViewModel[];
+    services: PlanServiceValue[];
 }
 
 export interface PlanData {

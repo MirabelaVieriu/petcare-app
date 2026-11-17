@@ -101,7 +101,7 @@ export default async function AdminClientsPage() {
                                     <div className="clientCardActions">
                                         <ConfirmDeleteButton
                                             variant="icon"
-                                            action={deleteClient.bind(null, o.id)}
+                                            endpoint={`/api/clients/${o.id}`}
                                             ariaLabel={`Șterge ${o.fullName}`}
                                             title="Ștergi clientul?"
                                             description={

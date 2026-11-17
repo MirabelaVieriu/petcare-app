@@ -6,7 +6,6 @@ import { OwnerAccessor } from "@/lib/accessors/OwnerAccessor";
 import { petEmoji } from "@/lib/models/OwnerViewModel";
 import ConfirmDeleteButton from "@/components/user/ConfirmDeleteButton";
 import AddPetButton from "@/components/pets/AddPetButton";
-import { createPet, deleteClient, deletePet } from "../actions"
 export const dynamic = "force-dynamic";
 
 const fmt = (d: Date) =>
@@ -66,7 +65,8 @@ export default async function ClientDetailPage({
                         Client înregistrat
                     </div>
                 <ConfirmDeleteButton
-                    action={deleteClient.bind(null, userId)}
+                    endpoint={`/api/clients/${userId}`}
+                    redirectTo="/admin/clients"
                     label="Șterge clientul"
                     title="Ștergi clientul?"
                     description={
@@ -148,7 +148,7 @@ export default async function ClientDetailPage({
                                 {client.pets.length}
                             </span>
                         </div>
-                        <AddPetButton action={createPet} userId={userId} />
+                        <AddPetButton endpoint={`/api/clients/${userId}/pets`} />
 
                         {client.pets.length === 0 ? (
                             <div className="clientDetailEmpty">
@@ -173,7 +173,7 @@ export default async function ClientDetailPage({
                                         <ConfirmDeleteButton
                                             variant="icon"
                                             icon="🐾"
-                                            action={deletePet.bind(null, p.id)}
+                                            endpoint={`/api/pets/${p.id}`}
                                             ariaLabel={`Șterge animalul ${p.name}`}
                                             title="Ștergi animalul?"
                                             description={

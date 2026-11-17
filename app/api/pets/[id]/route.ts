@@ -1,7 +1,6 @@
-import { apiSession, unauthorized } from "lib/auth/apiGuard";
-import { ClientsApiController } from "lib/controllers/ClientsApiController";
-import { respond } from "lib/api/http";
-
+import { apiSession, unauthorized } from "@/lib/auth/apiGuard";
+import { ClientsApiController } from "@/lib/controllers/ClientsApiController";
+import { respond } from "@/lib/api/http";
 export const dynamic = "force-dynamic";
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
