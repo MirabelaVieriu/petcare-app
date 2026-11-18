@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/auth/guards";
 import { OwnerAccessor } from "@/lib/accessors/OwnerAccessor";
 import ConfirmDeleteButton from "@/components/user/ConfirmDeleteButton";
 export const dynamic = "force-dynamic";
+git status
 
 const initials = (fullName: string) =>
     fullName
