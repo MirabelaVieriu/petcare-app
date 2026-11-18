@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 
 type Props = {
     endpoint: string;
-    redirectTo?: string;      
+    redirectTo?: string;
+    onDeletedAction?: () => void;
     title: string;
     description: ReactNode;
     label?: string;
@@ -16,7 +17,7 @@ type Props = {
     ariaLabel?: string;
 };
 export default function ConfirmDeleteButton({
-                                                endpoint, redirectTo, title, description,
+                                                endpoint, redirectTo,onDeletedAction, title, description,
                                                 label = "Șterge", variant = "button", icon = "⚠️", ariaLabel,
                                             }: Props) {
     const router = useRouter();
@@ -38,6 +39,7 @@ export default function ConfirmDeleteButton({
                     return;
                 }
                 setOpen(false);
+                onDeletedAction?.();
                 if (redirectTo) router.push(redirectTo);
                 router.refresh();
             } catch {
