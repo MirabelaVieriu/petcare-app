@@ -11,12 +11,13 @@ export async function GET(_req: Request, { params }: Ctx) {
 }
 
 export async function PUT(request: Request, { params }: Ctx) {
-    if (!(await apiSession("ADMIN"))) return unauthorized();
+    const s = await apiSession("ADMIN");
+    if (!s) return unauthorized();
 
     const json = await readJson(request);
     if (json === null) return respond(fail(400, { form: "JSON invalid." }));
 
-    return respond(await AppointmentsApiController.update(Number((await params).id), json));
+    return respond(await AppointmentsApiController.update(Number((await params).id), json,s.id));
 }
 export async function DELETE(_req: Request, { params }: Ctx) {
     if (!(await apiSession("ADMIN"))) return unauthorized();

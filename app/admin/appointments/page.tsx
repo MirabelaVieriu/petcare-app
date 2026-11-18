@@ -13,7 +13,6 @@ export default async function AppointmentsIndex() {
                 <div className={styles.header}>
                     <div>
                         <h1 className={styles.title}>📅 Programări</h1>
-                        <p className={styles.subtitle}>Date încărcate prin API (GET /api/appointments)</p>
                     </div>
                     <Link href="/admin/appointments/new" className={styles.btnPrimary}>
                         + Programare nouă

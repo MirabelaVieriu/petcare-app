@@ -10,9 +10,11 @@ import { fail, validId, type ApiResponse } from "@/lib/api/http";
 const notFound = () => fail(404, { id: "Programarea nu există." });
 
 async function validate(
-    body: unknown
+    body: unknown,
+    adminId: number
 ): Promise<{ data: AppointmentData } | { errors: Record<string, string> }> {
-    const { errors, data } = validateAppointmentForm(readAppointmentJson(body));
+    const values = { ...readAppointmentJson(body), adminId: String(adminId) };
+    const { errors, data } = validateAppointmentForm(values);
     if (!data) return { errors: errors as Record<string, string> };
 
     if (data.petId !== null && !(await AppointmentAccessor.petBelongsToUser(data.petId, data.userId))) {
@@ -34,8 +36,8 @@ export const AppointmentsApiController = {
     },
 
     /** POST /api/appointments */
-    async create(body: unknown): Promise<ApiResponse> {
-        const v = await validate(body);
+    async create(body: unknown, adminId: number): Promise<ApiResponse> {
+        const v = await validate(body, adminId);
         if (!("data" in v)) return { status: 400, body: { errors: v.errors } };
 
         try {
@@ -48,10 +50,10 @@ export const AppointmentsApiController = {
     },
 
     /** PUT /api/appointments/{id} */
-    async update(id: number, body: unknown): Promise<ApiResponse> {
+    async update(id: number, body: unknown, adminId: number): Promise<ApiResponse> {
         if (!validId(id) || !(await AppointmentAccessor.getEntity(id))) return notFound();
 
-        const v = await validate(body);
+        const v = await validate(body,adminId);
         if (!("data" in v)) return { status: 400, body: { errors: v.errors } };
 
         try {

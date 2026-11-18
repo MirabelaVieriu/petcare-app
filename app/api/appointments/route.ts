@@ -9,13 +9,14 @@ export async function GET() {
     return respond(await AppointmentsApiController.getAll());
 }
 export async function POST(request: Request) {
-    if (!(await apiSession("ADMIN"))) return unauthorized();
+    const s = await apiSession("ADMIN");
+    if (!s) return unauthorized();
 
 
     const json = await readJson(request);
     if (json === null) return respond(fail(400, { form: "JSON invalid." }));
 
-    const res = await AppointmentsApiController.create(json);
+    const res = await AppointmentsApiController.create(json,s.id);
     const headers: HeadersInit = {};
     if (res.status === 201) headers["Location"] = `/api/appointments/${(res.body as { id: number }).id}`;
     return respond(res,headers);
