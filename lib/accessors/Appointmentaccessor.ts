@@ -76,6 +76,26 @@ export const AppointmentAccessor = {
             vets: admins.map(a => ({ id: a.id, label: `Dr. ${a.firstName} ${a.lastName}` })),
         };
     },
+    async getFormOptionsForUser(userId: number): Promise<AppointmentFormOptions> {
+        const [pets, admins] = await Promise.all([
+            prisma.pet.findMany({
+                where: { userId },
+                select: { id: true, userId: true, name: true, type: true },
+                orderBy: { name: "asc" },
+            }),
+            prisma.admin.findMany({
+                select: { id: true, firstName: true, lastName: true },
+                orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+            }),
+        ]);
+
+        return {
+            clients: [],
+            pets: pets.map(p => ({ id: p.id, userId: p.userId, label: `${p.name} (${p.type})` })),
+            vets: admins.map(a => ({ id: a.id, label: `Dr. ${a.firstName} ${a.lastName}` })),
+        };
+    },
+
 
     /** Regulă de business: animalul trebuie să fie al clientului ales */
     async petBelongsToUser(petId: number, userId: number): Promise<boolean> {

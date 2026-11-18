@@ -17,12 +17,20 @@ export default function AppointmentForm({
     endpoint,
     method,
     submitLabel = "Creează programarea",
+    lockVet=false,
+    hideClient=false,
+    requirePet=false,
+    redirectTo = "/admin/appointments",
 }: {
     options: AppointmentFormOptions;
     initialValues?: AppointmentFormValues;
     endpoint: string;
     method: "POST" | "PUT";
     submitLabel?: string;
+    lockVet?: boolean;
+    hideClient?: boolean;
+    requirePet?: boolean;
+    redirectTo?: string;
 }) {
     const router = useRouter();
     const [values, setValues] = useState(initialValues);
@@ -44,7 +52,7 @@ export default function AppointmentForm({
                 body: JSON.stringify(values),
             });
             if (res.ok) {
-                router.push("/admin/appointments");
+                router.push(redirectTo);
                 router.refresh();
                 return;
             }
@@ -76,28 +84,34 @@ export default function AppointmentForm({
                 </select>
                 {err(errors.service)}
             </label>
-
-            <label className={styles.field}>Client
-                <select value={values.userId}
-                        onChange={e => setValues(v => ({ ...v, userId: e.target.value, petId: "" }))}
-                        className={styles.input}>
-                    <option value="">— alege —</option>
-                    {options.clients.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
-                </select>
-                {err(errors.userId)}
-            </label>
+            {!hideClient && (
+                <label className={styles.field}>Client
+                    <select value={values.userId}
+                            onChange={e => setValues(v => ({ ...v, userId: e.target.value, petId: "" }))}
+                            className={styles.input}>
+                        <option value="">— alege —</option>
+                        {options.clients.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+                    </select>
+                    {err(errors.userId)}
+                </label>
+            )}
 
             <label className={styles.field}>Animal
                 <select value={values.petId} onChange={e => set("petId", e.target.value)} className={styles.input}>
-                    <option value="">— niciun animal —</option>
+                    <option value="">{requirePet ? "— alege animalul —" : "— niciun animal —"}</option>
                     {petsOfClient.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
                 </select>
                 {err(errors.petId)}
             </label>
 
             <label className={styles.field}>Veterinar
-                <select value={values.adminId} onChange={e => set("adminId", e.target.value)} className={styles.input}>
-                    <option value="">— niciun veterinar —</option>
+                <select
+                    value={values.adminId}
+                    onChange={e => set("adminId", e.target.value)}
+                    disabled={lockVet}
+                    className={styles.input}
+                >
+                    <option value="">— alege —</option>
                     {options.vets.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
                 </select>
                 {err(errors.adminId)}

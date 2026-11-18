@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { requireAdmin } from "@/lib/auth/guards";
 import { AppointmentsController } from "@/lib/controllers/AppoinmentsController";
 import AppointmentForm from "@/components/appointmet/AppointmentForm";
 import type { AppointmentFormValues } from "@/lib/models/Appoinmentviewmodel";
@@ -17,6 +18,7 @@ export default async function EditAppointmentPage({
 }: {
     params: Promise<{ id: string }>;
 }) {
+    const admin = await requireAdmin();
     const { id } = await params;
     const appointmentId = Number(id);
     const [appointment, options] = await Promise.all([
@@ -31,7 +33,7 @@ export default async function EditAppointmentPage({
     const initialValues: AppointmentFormValues = {
         userId: String(appointment.userId),
         petId: appointment.petId ? String(appointment.petId) : "",
-        adminId: appointment.adminId ? String(appointment.adminId) : "",
+        adminId: String(admin.id),
         service: appointment.service,
         date: toDateTimeLocalValue(appointment.date),
     };
@@ -56,6 +58,7 @@ export default async function EditAppointmentPage({
                         endpoint={`/api/appointments/${appointmentId}`}
                         method="PUT"
                         submitLabel="Salvează modificările"
+                        lockVet
                     />
                 </div>
             </div>

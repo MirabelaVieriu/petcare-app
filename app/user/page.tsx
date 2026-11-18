@@ -4,7 +4,7 @@ import { petEmoji } from "@/lib/models/OwnerViewModel";
 import AddPetButton from "@/components/pets/AddPetButton";
 import ConfirmDeleteButton from "@/components/user/ConfirmDeleteButton";
 import { serviceLabel } from "@/lib/models/Appoinmentviewmodel";
-
+import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 const TZ = "Europe/Bucharest";
@@ -157,7 +157,7 @@ export default async function UserHomePage() {
                         <div className="cardHead">
                             <h2>📅 Programări viitoare</h2>
                         </div>
-
+                        <Link href="/user/appointments/new" className="addPetToggle">＋ Programare nouă</Link>
                         {appointments.length === 0 ? (
                             <div className="empty">
                                 <span>🗓️</span>
