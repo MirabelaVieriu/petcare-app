@@ -104,18 +104,26 @@ export default function AppointmentForm({
                 {err(errors.petId)}
             </label>
 
-            <label className={styles.field}>Veterinar
-                <select
-                    value={values.adminId}
-                    onChange={e => set("adminId", e.target.value)}
-                    disabled={lockVet}
-                    className={styles.input}
-                >
-                    <option value="">— alege —</option>
-                    {options.vets.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
-                </select>
-                {err(errors.adminId)}
-            </label>
+            {lockVet ? (
+                <p className={styles.field}>
+                    Veterinar:{" "}
+                    <strong>
+                        {options.vets.find(v => String(v.id) === values.adminId)?.label ?? "—"}
+                    </strong>
+                </p>
+            ) : (
+                <label className={styles.field}>Veterinar
+                    <select
+                        value={values.adminId}
+                        onChange={e => set("adminId", e.target.value)}
+                        className={styles.input}
+                    >
+                        <option value="">— alege —</option>
+                        {options.vets.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
+                    </select>
+                    {err(errors.adminId)}
+                </label>
+            )}
 
             <button disabled={pending} className={styles.btnPrimary}>
                 {pending ? "Se salvează..." : submitLabel}

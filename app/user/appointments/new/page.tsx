@@ -4,7 +4,6 @@ import { AppointmentAccessor } from "@/lib/accessors/Appointmentaccessor";
 import AppointmentForm from "@/components/appointmet/AppointmentForm";
 import { emptyAppointmentForm } from "@/lib/models/Appoinmentviewmodel";
 import styles from "@/app/admin/appointments/appointments.module.css";
-
 export const dynamic = "force-dynamic";
 
 export default async function UserNewAppointmentPage() {

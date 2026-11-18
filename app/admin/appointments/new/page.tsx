@@ -28,8 +28,9 @@ export default async function CreateAppointment() {
                         options={options}
                         initialValues={{ ...emptyAppointmentForm, adminId: String(admin.id) }}
                         endpoint="/api/appointments"
-                        method="POST"/>
-                       lockVet
+                        method="POST"
+                        lockVet
+                    />
                 </div>
             </div>
         </div>
