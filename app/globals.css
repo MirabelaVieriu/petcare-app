@@ -858,3 +858,238 @@ button, input, select, textarea { font: inherit; }
 @media (max-width: 640px) {
   .admGrid2 { grid-template-columns: 1fr; }
 }
+/* ═════════════ CLIENȚI: listă ═════════════ */
+.clientsPage { display: flex; flex-direction: column; gap: 22px; }
+
+.clientsHero {
+  display: flex; justify-content: space-between; align-items: center; gap: 20px;
+  padding: 28px 32px; border-radius: 28px; color: #fff;
+  background:
+          radial-gradient(circle at 90% 20%, rgba(253, 224, 71, 0.3), transparent 40%),
+          linear-gradient(135deg, #0d9488, #0ea5e9);
+  box-shadow: 0 20px 40px rgba(13, 148, 136, 0.25);
+}
+.clientsHero .admTitle, .clientsHero .admSubtitle { color: #fff; }
+.clientsEyebrow {
+  display: inline-block; margin-bottom: 8px; padding: 5px 12px;
+  border-radius: 999px; background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.35);
+  font-size: 0.75rem; font-weight: 800; letter-spacing: 0.6px;
+}
+.clientsHeroIcon { font-size: 3.4rem; }
+
+.clientsStats {
+  display: flex; align-items: center; gap: 16px; width: fit-content;
+  padding: 16px 24px; border-radius: 20px; background: #fff;
+  border: 1px solid #e2e8f0; box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+.clientsStatIcon {
+  display: grid; place-items: center; width: 52px; height: 52px;
+  border-radius: 16px; background: #ccfbf1; font-size: 1.6rem;
+}
+.clientsStatNumber { display: block; font-size: 1.8rem; font-weight: 800; line-height: 1; color: #134e4a; }
+.clientsStatLabel { color: #64748b; font-weight: 600; }
+
+.clientsSectionHeader { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.clientsSectionHeader h2 { margin: 0; font-size: 1.3rem; font-weight: 800; color: #134e4a; }
+.clientsSectionHeader p { margin: 4px 0 0; color: #64748b; }
+.clientsCount {
+  padding: 6px 14px; border-radius: 999px; background: #ccfbf1;
+  color: #0f766e; font-weight: 800; font-size: 0.85rem;
+}
+
+.clientsEmpty {
+  text-align: center; padding: 48px 20px; border-radius: 24px;
+  background: #fff; border: 1px dashed #99f6e4; color: #64748b;
+}
+.clientsEmpty div { font-size: 2.4rem; }
+.clientsEmpty h3 { margin: 8px 0 4px; color: #134e4a; }
+
+.clientsGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+.clientCard {
+  display: flex; flex-direction: column; gap: 16px; padding: 22px;
+  border-radius: 24px; background: #fff; border: 1px solid #e2e8f0;
+  box-shadow: 0 14px 30px rgba(13, 148, 136, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.clientCard:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(13, 148, 136, 0.16); }
+.clientCardTop { display: flex; justify-content: space-between; align-items: center; }
+
+.clientAvatar, .clientProfileAvatar {
+  display: grid; place-items: center; width: 54px; height: 54px;
+  border-radius: 18px; color: #fff; font-weight: 800; font-size: 1.1rem;
+  background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+}
+.clientAvatar0 { background: linear-gradient(135deg, #14b8a6, #0ea5e9); }
+.clientAvatar1 { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+.clientAvatar2 { background: linear-gradient(135deg, #fb923c, #ea580c); }
+.clientAvatar3 { background: linear-gradient(135deg, #f472b6, #db2777); }
+
+.clientStatus {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+  border-radius: 999px; background: #dcfce7; color: #166534;
+  font-size: 0.78rem; font-weight: 800;
+}
+.clientStatus span, .clientOnlineDot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
+}
+
+.clientInfo h3 { margin: 0 0 8px; font-size: 1.15rem; font-weight: 800; color: #134e4a; }
+.clientInfo p { margin: 4px 0; color: #475569; font-size: 0.92rem; word-break: break-word; }
+
+.clientCardFooter {
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  margin-top: auto; padding-top: 14px; border-top: 1px solid #e6f4f1;
+  color: #64748b; font-size: 0.85rem; font-weight: 600;
+}
+.clientCardActions { display: flex; align-items: center; gap: 8px; }
+.clientDetailsBtn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px;
+  border-radius: 12px; background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+  color: #fff; font-weight: 800; font-size: 0.85rem; text-decoration: none;
+  transition: transform 0.15s ease;
+}
+.clientDetailsBtn:hover { transform: translateY(-2px); }
+
+/* Butoane de ștergere */
+.clientDeleteIcon {
+  display: inline-grid; place-items: center; width: 36px; height: 36px;
+  border: 1px solid #fecaca; border-radius: 10px; background: #fff;
+  cursor: pointer; transition: background 0.15s;
+}
+.clientDeleteIcon:hover { background: #fef2f2; }
+.clientDeleteBtn {
+  padding: 10px 16px; border: 1px solid #fecaca; border-radius: 12px;
+  background: #fff; color: #b91c1c; font-weight: 800; cursor: pointer;
+  transition: background 0.15s;
+}
+.clientDeleteBtn:hover { background: #fef2f2; }
+
+/* ═════════════ CLIENȚI: detalii ═════════════ */
+.clientDetailPage { display: flex; flex-direction: column; gap: 22px; }
+
+.clientProfileHeader {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 18px;
+  padding: 26px 30px; border-radius: 28px; color: #fff;
+  background: linear-gradient(135deg, #0d9488, #0ea5e9);
+  box-shadow: 0 20px 40px rgba(13, 148, 136, 0.25);
+}
+.clientProfileAvatar {
+  width: 72px; height: 72px; font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.22); border: 2px solid rgba(255,255,255,0.5);
+}
+.clientProfileInfo { flex: 1; min-width: 200px; }
+.clientProfileLabel { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.8px; opacity: 0.85; }
+.clientProfileInfo h1 { margin: 4px 0; font-size: 1.9rem; font-weight: 800; }
+.clientProfileInfo p { margin: 0; opacity: 0.9; }
+.clientProfileBadge {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px;
+  border-radius: 999px; background: rgba(255,255,255,0.2); font-weight: 700; font-size: 0.85rem;
+}
+.clientProfileHeader .clientDeleteBtn { background: rgba(255,255,255,0.95); }
+
+.clientContactCard, .clientDetailCard {
+  padding: 24px; border-radius: 24px; background: #fff;
+  border: 1px solid #e2e8f0; box-shadow: 0 14px 30px rgba(13, 148, 136, 0.08);
+}
+.clientSectionHeading { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.clientSectionHeading h2 { margin: 0; font-size: 1.15rem; font-weight: 800; color: #134e4a; }
+.clientSectionHeading p { margin: 2px 0 0; color: #64748b; font-size: 0.88rem; }
+.clientSectionIcon {
+  display: grid; place-items: center; width: 44px; height: 44px;
+  border-radius: 14px; background: #ccfbf1; font-size: 1.3rem;
+}
+.clientSectionCount {
+  margin-left: auto; padding: 4px 12px; border-radius: 999px;
+  background: #ccfbf1; color: #0f766e; font-weight: 800;
+}
+
+.clientContactGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.clientContactItem {
+  display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+  border-radius: 16px; background: #f0fdfa; border: 1px solid #ccfbf1;
+}
+.clientContactIcon { font-size: 1.4rem; }
+.clientFieldLabel { display: block; color: #64748b; font-size: 0.8rem; font-weight: 700; }
+.clientContactItem strong { color: #134e4a; word-break: break-word; }
+
+.clientQuickStats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+.clientQuickStat {
+  display: flex; align-items: center; gap: 14px; padding: 18px 20px;
+  border-radius: 20px; background: #fff; border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+.clientQuickStatIcon {
+  display: grid; place-items: center; width: 50px; height: 50px;
+  border-radius: 16px; background: #e0f2fe; font-size: 1.5rem;
+}
+.clientQuickStat strong { display: block; font-size: 1.6rem; line-height: 1; color: #134e4a; }
+.clientQuickStat span:last-child { color: #64748b; font-weight: 600; font-size: 0.88rem; }
+
+.clientDetailGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.clientAppointmentsCard { grid-column: 1 / -1; }
+
+.clientDetailEmpty { text-align: center; padding: 24px 0; color: #64748b; }
+.clientDetailEmpty span { font-size: 2rem; }
+.clientDetailEmpty p { margin: 8px 0 0; }
+
+.clientPetsList, .clientRecordsList, .clientAppointmentsList { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+.clientPetItem, .clientSubscriptionItem, .clientAppointmentItem {
+  display: flex; align-items: center; gap: 14px; padding: 12px 14px;
+  border-radius: 16px; background: #f0fdfa; border: 1px solid #ccfbf1;
+}
+.clientPetAvatar, .clientRecordIcon, .clientAppointmentDate {
+  display: grid; place-items: center; width: 42px; height: 42px; flex-shrink: 0;
+  border-radius: 50%; background: #fff; font-size: 1.3rem;
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.15);
+}
+.clientPetInfo, .clientRecordInfo, .clientAppointmentInfo { flex: 1; min-width: 0; }
+.clientPetInfo strong, .clientRecordInfo strong, .clientAppointmentInfo strong { display: block; color: #134e4a; }
+.clientPetInfo span, .clientRecordInfo span, .clientAppointmentInfo span { color: #64748b; font-size: 0.85rem; }
+.clientAppointmentTime { color: #0d9488; font-weight: 700; font-size: 0.88rem; white-space: nowrap; }
+
+.clientStatusBadge { padding: 5px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 800; }
+.clientStatusBadge.isActive { background: #dcfce7; color: #166534; }
+.clientStatusBadge.isCancelled { background: #fee2e2; color: #991b1b; }
+
+@media (max-width: 800px) {
+  .clientDetailGrid { grid-template-columns: 1fr; }
+  .clientsHero { flex-direction: column; align-items: flex-start; }
+}
+
+/* ═════════════ Adăugare animal ═════════════ */
+.addPetToggle {
+  display: inline-block; margin-bottom: 14px; padding: 10px 16px;
+  border: 1px dashed #14b8a6; border-radius: 12px; background: #f0fdfa;
+  color: #0f766e; font-weight: 800; text-decoration: none; cursor: pointer;
+  transition: background 0.15s;
+}
+.addPetToggle:hover { background: #ccfbf1; }
+.addPetPanel {
+  display: grid; gap: 14px; margin-bottom: 16px; padding: 18px;
+  border-radius: 18px; background: #f8fafc; border: 1px solid #e2e8f0;
+}
+
+/* ═════════════ Modal confirmare ștergere ═════════════ */
+.modalBackdrop {
+  position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center;
+  padding: 20px; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(3px);
+}
+.modalBox {
+  width: min(420px, 100%); padding: 28px; text-align: center;
+  border-radius: 24px; background: #fff;
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.35);
+  animation: pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.modalIcon {
+  display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 12px;
+  border-radius: 50%; background: #fef3c7; font-size: 1.8rem;
+}
+.modalBox h3 { margin: 0 0 8px; font-size: 1.3rem; font-weight: 800; color: #134e4a; }
+.modalBox p { margin: 0 0 16px; color: #475569; line-height: 1.5; }
+.modalActions { display: flex; justify-content: center; gap: 10px; margin-top: 8px; }
+.modalDanger {
+  padding: 14px 22px; border: 0; border-radius: 14px; cursor: pointer;
+  background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; font-weight: 800;
+}
+.modalDanger:disabled, .admBtnGhost:disabled { opacity: 0.6; cursor: wait; }
